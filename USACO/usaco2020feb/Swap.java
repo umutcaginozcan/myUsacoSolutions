@@ -18,23 +18,23 @@ public class Swap {
 		read.close();
 
 		List<Integer> cows = new ArrayList<>();
+		List<Integer> initialCows = new ArrayList<>();
 		for (int c = 1; c <= n; c++) { 
 			cows.add(c); 
+			initialCows.add(c);
 		}
 
-		HashSet<List<Integer>> visited = new HashSet<>(); 
-		visited.add(new ArrayList<>(cows));
+		int step = 0;
 		while (true) {
 			reverseSegment(cows, a1, a2);
 			reverseSegment(cows, b1, b2);
-			if (visited.contains(cows)) { 
+			step++;
+			if (initialCows.equals(cows)) { 
 				break; 
 			}
-			visited.add(new ArrayList<>(cows));
 		}
 
-		int cycleLen = visited.size();
-		int swapsLeft = k % cycleLen;
+		int swapsLeft = k % step;
 		for (int s = 0; s < swapsLeft; s++) {
 			reverseSegment(cows, a1, a2);
 			reverseSegment(cows, b1, b2);

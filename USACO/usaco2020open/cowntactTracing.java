@@ -9,8 +9,6 @@ public class cowntactTracing {
     static int[] cowX = new int[maxT + 1];
     static int[] cowY = new int[maxT + 1];
 
-    // this function simulates handshakes over time to see if data agrees
-    // with this choice of patient_zero and K
     static boolean consistentWithData(int patientZero, int k) {
         boolean[] infected = new boolean[maxN + 1];
         int[] numHandshakes = new int[maxN + 1];
@@ -47,15 +45,15 @@ public class cowntactTracing {
         StringTokenizer st = new StringTokenizer(br.readLine());
         n = Integer.parseInt(st.nextToken()); // Number of cows
         int T = Integer.parseInt(st.nextToken()); // Number of handshakes
-        String s = br.readLine();  // Next line contains the initial infection statuses
+        String s = br.readLine();  // initial 
 
         cowEndsInfected = new boolean[n + 1];
 
         for (int x = 1; x <= n; x++) {
-            cowEndsInfected[x] = (s.charAt(x - 1) == '1');  // marks infected cows as true
+            cowEndsInfected[x] = (s.charAt(x - 1) == '1');  // mark
         }
 
-        for (int i = 0; i < T; i++) {  // read input and store into array
+        for (int i = 0; i < T; i++) {  
             st = new StringTokenizer(br.readLine());
             int t = Integer.parseInt(st.nextToken());
             cowX[t] = Integer.parseInt(st.nextToken());
@@ -65,7 +63,7 @@ public class cowntactTracing {
         boolean[] possibleI = new boolean[maxN + 1];
         boolean[] possibleK = new boolean[maxT + 2];
 
-        for (int i = 1; i <= n; i++) {  // loop through each pair
+        for (int i = 1; i <= n; i++) {  
             for (int k = 0; k <= 251; k++) {
                 if (consistentWithData(i, k)) {
                     possibleI[i] = true;
