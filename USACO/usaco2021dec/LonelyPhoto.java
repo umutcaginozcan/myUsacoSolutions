@@ -1,5 +1,3 @@
-package myUsacoSolutions.USACO.usaco2021dec;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
