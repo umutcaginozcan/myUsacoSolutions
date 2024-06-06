@@ -7,16 +7,16 @@ import java.util.StringTokenizer;
 public class AcowdemiaIII {
  
     public static void main(String[] args) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer tokenizer = new StringTokenizer(in.readLine());
-        int n = Integer.parseInt(tokenizer.nextToken());
-        int m = Integer.parseInt(tokenizer.nextToken());
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        int n = Integer.parseInt(st.nextToken());
+        int m = Integer.parseInt(st.nextToken());
         char[][] pasture = new char[n + 2][];
         pasture[0] = new char[m + 2];
         Arrays.fill(pasture[0], '.');
         pasture[n + 1] = pasture[0];
         for (int y = 1; y <= n; y++) {
-            pasture[y] = ('.' + in.readLine() + '.').toCharArray();
+            pasture[y] = ('.' + br.readLine() + '.').toCharArray();
         }
         int answer = 0;
         for (int y = 1; y <= n; y++) {
