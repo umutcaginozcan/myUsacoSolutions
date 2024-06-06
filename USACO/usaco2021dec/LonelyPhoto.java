@@ -1,5 +1,3 @@
-package myUsacoSolutions.USACO.usaco2021dec;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +8,7 @@ public class LonelyPhoto {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
+        long N = Long.parseLong(st.nextToken());
         String cows = br.readLine();
 
         int result = 0;
