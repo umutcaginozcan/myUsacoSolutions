@@ -1,49 +1,27 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class LonelyPhoto {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        String s = scanner.next();
+        long ans = 0;
 
-        long N = Long.parseLong(st.nextToken());
-        String cows = br.readLine();
-
-        int result = 0;
-        for (int i = 0; i < N - 2; i++) {
-            for (int j = i + 3; j <= N; j++) { // Changed to j <= N
-                if (!isLonely(cows.substring(i, j))) {
-                    break;
-                }
-                if (isSingleBreed(cows.substring(i, j))) { // Checking the correct substring
-                    continue;
-                }
-                result++;
+        for (int i = 0; i < n; i++) {
+            long left = 0;
+            if (i > 0 && s.charAt(i - 1) != s.charAt(i)) {
+                left++;
+                for (int k = i - 2; k >= 0 && s.charAt(k) == s.charAt(i - 1); k--) left++;
             }
+            long right = 0;
+            if (i + 1 < n && s.charAt(i + 1) != s.charAt(i)) {
+                right++;
+                for (int k = i + 2; k < n && s.charAt(k) == s.charAt(i + 1); k++) right++;
+            }
+            ans += left * right + Math.max(left - 1, 0) + Math.max(right - 1, 0);
         }
 
-        System.out.println(result);
-    }
-
-    public static boolean isLonely(String photo) {
-        int guernseyCount = 0, holsteinCount = 0;
-        for (int i = 0; i < photo.length(); i++) {
-            if (photo.charAt(i) == 'G') guernseyCount++;
-            else holsteinCount++;
-        }
-
-        return !(guernseyCount >= 2 && holsteinCount >= 2);
-    }
-
-    public static boolean isSingleBreed(String photo) {
-        int guernseyCount = 0, holsteinCount = 0;
-        for (int i = 0; i < photo.length(); i++) {
-            if (photo.charAt(i) == 'G') guernseyCount++;
-            else holsteinCount++;
-        }
-
-        return (guernseyCount > 0 && holsteinCount == 0) || (guernseyCount == 0 && holsteinCount > 0);
+        System.out.println(ans);
+        scanner.close();
     }
 }
