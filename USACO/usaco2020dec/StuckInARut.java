@@ -1,61 +1,43 @@
-import java.io.*;
-import java.util.StringTokenizer;
-
-public class StuckInARut {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
-    
-        int N = Integer.parseInt(br.readLine()); // Number of cows
-        
-        // Store inputs
-        char[] directions = new char[N];
-        int[] x = new int[N];
-        int[] y = new int[N];
-        for (int i = 0; i < N; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine());
-            directions[i] = st.nextToken().charAt(0);
-            x[i] = Integer.parseInt(st.nextToken());
-            y[i] = Integer.parseInt(st.nextToken());
-        }
-        br.close();
-
-        int[] results = new int[N];
-        boolean[] stopped = new boolean[N];
-        
-        // Initialize results
-        for (int i = 0; i < N; i++) {
-            results[i] = Integer.MAX_VALUE;
-        }
-
-        // Determine stop conditions
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (i == j) continue;
-                
-                if (directions[i] == 'N' && directions[j] == 'E' && x[i] > x[j] && y[i] < y[j]) {
-                    // Cow i (north) crosses path of cow j (east)
-                    int ti = y[j] - y[i]; // Time for north-facing cow i to reach y-coordinate of j
-                    int tj = x[i] - x[j]; // Time for east-facing cow j to reach x-coordinate of i
-                    if (ti < tj && (tj < results[j])) {
-                        results[j] = tj;
-                        stopped[j] = true;
-                    } else if (tj < ti && (ti < results[i])) {
-                        results[i] = ti;
-                        stopped[i] = true;
+import java.util.*;
+     
+    public class StuckInARut {
+     
+        public static void main(String[] args) {
+            Scanner in = new Scanner(System.in);
+            int n = in.nextInt();
+            int[] xs = new int[n];
+            int[] ys = new int[n];
+            char[] dir = new char[n];
+            for (int j = 0; j < n; j++) {
+                dir[j] = in.next().charAt(0);
+                xs[j] = in.nextInt();
+                ys[j] = in.nextInt();
+            }
+            int[] answer = new int[n];
+            Arrays.fill(answer, Integer.MAX_VALUE);
+            List<Integer> differences = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+                for (int k = j + 1; k < n; k++) {
+                    differences.add(Math.abs(xs[k] - xs[j]));
+                    differences.add(Math.abs(ys[k] - ys[j]));
+                }
+            }
+            Collections.sort(differences);
+            for (int d : differences) {
+                for (int j = 0; j < n; j++) {
+                    for (int k = 0; k < n; k++) {
+                        if (dir[j] == 'E' && dir[k] == 'N' && xs[j] < xs[k] && ys[k] < ys[j]) {
+                            if (xs[j] + d == xs[k] && ys[k] + Math.min(answer[k], d) > ys[j]) {
+                                answer[j] = Math.min(answer[j], d);
+                            } else if (ys[k] + d == ys[j] && xs[j] + Math.min(answer[j], d) > xs[k]) {
+                                answer[k] = Math.min(answer[k], d);
+                            }
+                        }
                     }
                 }
             }
-        }
-
-        // Output results
-        for (int i = 0; i < N; i++) {
-            if (!stopped[i] || results[i] == Integer.MAX_VALUE) {
-                pw.println("Infinity");
-            } else {
-                pw.println(results[i]);
+            for (int j = 0; j < n; j++) {
+                System.out.println(answer[j] == Integer.MAX_VALUE ? "Infinity" : answer[j]);
             }
         }
-        pw.close();
     }
-}
