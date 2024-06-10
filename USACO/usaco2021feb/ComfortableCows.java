@@ -1,45 +1,51 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.util.StringTokenizer;
+import java.util.Scanner;
 
 public class ComfortableCows {
-    public static void main(String[] args) throws IOException {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        PrintWriter pw = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
+    private static final int MAXN = 1001;
+    private static int N;
+    private static boolean[][] A = new boolean[MAXN][MAXN];
+    private static int[] dx = {-1, 1, 0, 0};
+    private static int[] dy = {0, 0, -1, 1};
 
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        int N = Integer.parseInt(st.nextToken());
-
-        int[][] map = new int[1001][1001];
-        for (int i = 0; i < N; i++) {
-            st = new StringTokenizer(br.readLine());
-            int column = Integer.parseInt(st.nextToken());
-            int row = Integer.parseInt(st.nextToken());
-            map[row][column] = 1;
-            System.out.println(countComfortables(map));
-        }
+    private static boolean validPosition(int x, int y) {
+        return x >= 0 && x <= N && y >= 0 && y <= N;
     }
 
-    public static int countComfortables(int[][] map) {
-        int count = 0;
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 0) continue;  // Skip when cell is empty
-
-                // Ensure checks are within array bounds
-                int neighborCount = 0;
-                if (j > 0 && map[i][j - 1] == 1) neighborCount++;     // Check left
-                if (j < map[i].length - 1 && map[i][j + 1] == 1) neighborCount++;  // Check right
-                if (i > 0 && map[i - 1][j] == 1) neighborCount++;     // Check above
-                if (i < map.length - 1 && map[i + 1][j] == 1) neighborCount++;  // Check below
-
-                if (neighborCount == 3) count++;
+    private static boolean comfortable(int x, int y) {
+        if (!A[x][y]) return false;
+        int neighbors = 0;
+        for (int d = 0; d < 4; d++) {
+            if (validPosition(x + dx[d], y + dy[d]) && A[x + dx[d]][y + dy[d]]) {
+                neighbors++;
             }
         }
-        return count;
+        return neighbors == 3;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        N = scanner.nextInt();
+        int nComfortable = 0;
+
+        for (int i = 0; i < N; i++) {
+            int x = scanner.nextInt();
+            int y = scanner.nextInt();
+
+            for (int d = 0; d < 4; d++) {
+                if (validPosition(x + dx[d], y + dy[d])) {
+                    nComfortable -= comfortable(x + dx[d], y + dy[d]) ? 1 : 0;
+                }
+            }
+            A[x][y] = true;
+            for (int d = 0; d < 4; d++) {
+                if (validPosition(x + dx[d], y + dy[d])) {
+                    nComfortable += comfortable(x + dx[d], y + dy[d]) ? 1 : 0;
+                }
+            }
+            nComfortable += comfortable(x, y) ? 1 : 0;
+            System.out.println(nComfortable);
+        }
+
+        scanner.close();
     }
 }
