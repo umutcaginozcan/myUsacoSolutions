@@ -7,24 +7,24 @@ public class HungryCow {
         long N = scanner.nextLong();  
         long T = scanner.nextLong();  
 
-        long waitingBales = 0, total = 0, lastTime = 0;
+        long nonDelivered = 0, total = 0, lastTime = 0;
 
         for (long i = 0; i < N; i++) {
             long currentTime = scanner.nextLong();
             long deliveredNow = scanner.nextLong();
 
             total += deliveredNow;
-            waitingBales -= (currentTime - lastTime);
-            waitingBales = Math.max(waitingBales, 0) + deliveredNow;
+            nonDelivered -= (currentTime - lastTime);
+            nonDelivered = Math.max(nonDelivered, 0) + deliveredNow;
             lastTime = currentTime;
         }
 
         if (lastTime <= T) {
-            waitingBales -= (T + 1 - lastTime);
-            waitingBales = Math.max(waitingBales, 0);
+            nonDelivered -= (T + 1 - lastTime);
+            nonDelivered = Math.max(nonDelivered, 0);
         }
 
-        System.out.println(total - waitingBales);
+        System.out.println(total - nonDelivered);
         scanner.close();
     }
 }
