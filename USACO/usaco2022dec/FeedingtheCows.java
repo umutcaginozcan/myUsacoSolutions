@@ -3,52 +3,38 @@ import java.util.Scanner;
 public class FeedingtheCows {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        int T = in.nextInt(); // Number of test cases
+        int T = in.nextInt();
 
-        for (int t = 0; t < T; t++) {
-            int strLen = in.nextInt();
-            int maxDist = in.nextInt();
+        while (T > 0) {
+            T--;
+            int N = in.nextInt();
+            int K = in.nextInt();
+
             String str = in.next();
-            solution(str, strLen, maxDist);
-        }
-        in.close();
-    }
+            StringBuilder res = new StringBuilder();
+            for (int i = 0; i < N; i++) res.append('.');
 
-    public static void solution(String str, int strLen, int maxDist) {
-        StringBuilder ans = new StringBuilder();
-        for (int i = 0; i < strLen; i++) {
-            ans.append('.');
-        }
-
-        int intAns = 0;
-        for (int i = 0; i < strLen; i++) {
-            if (!hasGrass(ans, str.charAt(i), maxDist, i)) {
-                if (ans.charAt(Math.min(strLen - 1, i + maxDist)) == '.') {
-                    ans.setCharAt(Math.min(strLen - 1, i + maxDist), str.charAt(i));
-                } else {
-                    for (int j = Math.min(strLen - 1, i + maxDist) - 1; j >= 0; j--) {
-                        if (ans.charAt(j) == '.') {
-                            ans.setCharAt(j, str.charAt(i));
-                            break;
-                        }
-                    }
+            int lastG = - (K + 1), lastH = - (K + 1);
+            int count = 0;
+            for (int i = 0; i < N; i++) {
+                if (str.charAt(i) == 'G' && Math.abs(i - lastG) > K) {
+                    int x = Math.min(i + K, N - 1);
+                    if (res.charAt(x) != '.') x--;
+                    res.setCharAt(x, 'G');
+                    count++;
+                    lastG = x;
+                } 
+                if (str.charAt(i) == 'H' && Math.abs(i - lastH) > K) {
+                    int x = Math.min(i + K, N - 1);
+                    if (res.charAt(x) != '.') x--;
+                    res.setCharAt(x, 'H');
+                    count++;
+                    lastG = x;
                 }
-                intAns++;
             }
-        }
 
-        System.out.println(intAns);
-        System.out.println(ans.toString());
-    }
-
-    public static boolean hasGrass(StringBuilder ans, char cowType, int maxDist, int currentIndex) {
-        int start = Math.max(0, currentIndex - maxDist);
-        int end = Math.min(ans.length() - 1, currentIndex + maxDist);
-        for (int i = start; i <= end; i++) {
-            if (ans.charAt(i) == cowType) {
-                return true;
-            }
+            System.out.println(count);
+            System.out.println(res);
         }
-        return false;
     }
 }
