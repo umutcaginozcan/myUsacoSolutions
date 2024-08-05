@@ -12,19 +12,18 @@ public class BalancingBacteria {
             numbers[i] = in.nextLong();
         }
 
-        long ans = 0;
+        long increase = 0, decrease = 0, adjustment = 0;
         for (int i = 0; i < N; i++)  {
-            ans += Math.abs(numbers[i]);
-            for (int j = i + 1; j < N; j++) {
-                if (numbers[i] > 0) {
-                    numbers[j] -= (j - i + 1) * Math.abs(numbers[i]);
-                } else {
-                    numbers[j] += (j - i + 1) * Math.abs(numbers[i]);
-                }
+            numbers[i] += adjustment;
+            if (numbers[i] < 0) {
+                increase -= numbers[i];
+            } else {
+                decrease += numbers[i];
             }
+            adjustment = adjustment + increase - decrease - numbers[i];
         }
 
-        System.out.println(ans);
+        System.out.println(increase + decrease);
     }
 }
 
